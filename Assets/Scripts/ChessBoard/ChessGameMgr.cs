@@ -266,6 +266,8 @@ public partial class ChessGameMgr : MonoBehaviour
             OnPlayerTurn(teamTurn == EChessTeam.White);
         if (OnScoreUpdated != null)
             OnScoreUpdated(scores[0], scores[1]);
+
+        gameObject.SetActive(false);
     }
 
     void Update()

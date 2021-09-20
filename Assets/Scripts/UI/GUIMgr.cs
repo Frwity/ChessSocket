@@ -27,7 +27,6 @@ public class GUIMgr : MonoBehaviour
     Text whiteScoreText = null;
     Text blackScoreText = null;
 
-    // Use this for initialization
     void Awake()
     {
         whiteToMoveTr = transform.Find("WhiteTurnText");
@@ -43,7 +42,7 @@ public class GUIMgr : MonoBehaviour
         ChessGameMgr.Instance.OnScoreUpdated += UpdateScore;
     }
 	
-    void DisplayTurn(bool isWhiteMove)
+    public void DisplayTurn(bool isWhiteMove)
     {
         whiteToMoveTr.gameObject.SetActive(isWhiteMove);
         blackToMoveTr.gameObject.SetActive(!isWhiteMove);

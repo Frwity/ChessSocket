@@ -9,22 +9,45 @@ using System.Threading;
 
 public class ServerHost : MonoBehaviour
 {
-    Socket socket;
+    Socket serverSocket;
     int port = 11000;
     IPEndPoint localEP;
+    IPAddress networkIP;
     Socket clientSocket;
     bool hasClient = false;
     bool isReceiving = false;
 
     void Awake()
     {
-        IPHostEntry host = Dns.GetHostEntry("localhost");
-        IPAddress ipAdress = host.AddressList[0];
-        localEP = new IPEndPoint(ipAdress, port);
-        socket = new Socket(ipAdress.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
-        Debug.Log("Starting Server");
-        socket.Bind(localEP);
-        socket.Listen(10);
+        if (RegisterNetworkIP())
+        {
+            localEP = new IPEndPoint(networkIP, port);
+            serverSocket = new Socket(networkIP.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
+            Debug.Log("Starting Server");
+            serverSocket.Bind(localEP);
+            serverSocket.Listen(10);
+        }
+        else
+        {
+            Debug.Log("[SERVER] Could not find this machine's IP LAN address. Are you connected to a network?");
+        }
+    }
+
+    public bool RegisterNetworkIP()
+    {
+        IPHostEntry host = Dns.GetHostEntry(Dns.GetHostName());
+
+        // Look for the network IP of this machine
+        foreach (IPAddress ip in host.AddressList)
+        {
+            if (ip.AddressFamily == AddressFamily.InterNetwork)
+            {
+                networkIP = ip;
+                return true;
+            }
+        }
+
+        return false;
     }
 
     void Start()
@@ -52,7 +75,7 @@ public class ServerHost : MonoBehaviour
     {
         try
         {
-            clientSocket = socket.Accept();
+            clientSocket = serverSocket.Accept();
             Debug.Log("Accepted Client !");
             hasClient = true;
         }
@@ -106,7 +129,7 @@ public class ServerHost : MonoBehaviour
     {
         if (clientSocket != null)
         {
-            // shutdown client socket
+            // shutdown client serverSocket
             try
             {
                 Debug.Log("Shutdown Client Socket");
@@ -124,13 +147,14 @@ public class ServerHost : MonoBehaviour
             }
         }
 
-        if (socket != null)
+        if (serverSocket != null)
         {
             Debug.Log("Closing Socket");
-            // server socket : no shutdown necessary
-            socket.Close();
+            // server serverSocket : no shutdown necessary
+            serverSocket.Close();
         }
     }
+
     private void OnDestroy()
     {
         Disconnect();

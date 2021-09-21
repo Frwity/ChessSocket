@@ -10,21 +10,44 @@ using System.Threading;
 public class Client : MonoBehaviour
 {
     Socket socket;
-    int port = 11000;
+    private IPAddress networkIP;
     bool isReceiving = false;
     public bool Connected { get { return socket.Connected; } }
 
     private void Awake()
     {
-        IPHostEntry host = Dns.GetHostEntry("localhost");
-        IPAddress ipAdress = host.AddressList[0];
-        socket = new Socket(ipAdress.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
-        Debug.Log("Client Creation");
+        if (RegisterNetworkIP())
+        {
+            socket = new Socket(networkIP.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
+            Debug.Log("Client Creation");
+        }
+        else
+        {
+            Debug.Log("[CLIENT] Could not find this machine's IP LAN address. Are you connected to a network?");
+            Disconnect();
+        }
+    }
+
+    public bool RegisterNetworkIP()
+    {
+        IPHostEntry host = Dns.GetHostEntry(Dns.GetHostName());
+
+        // Look for the network IP of this machine
+        foreach (IPAddress ip in host.AddressList)
+        {
+            if (ip.AddressFamily == AddressFamily.InterNetwork)
+            {
+                networkIP = ip;
+                return true;
+            }
+        }
+
+        return false;
     }
 
     void Start()
     {
-        Connect();
+        StartConnect("10.2.102.167", 11000);
     }
 
     void Update()
@@ -36,15 +59,23 @@ public class Client : MonoBehaviour
             SendMessageToServer("salut le server");
     }
 
-    public void Connect()
+    void StartConnect(string serverIP, int port)
     {
-        IPHostEntry host = Dns.GetHostEntry("localhost");
-        IPAddress ipAdress = host.AddressList[0];
-        IPEndPoint serverEP = new IPEndPoint(ipAdress, 11000);
+        Debug.Log("Trying Connection To" + serverIP);
+
+        ThreadStart threadstart = delegate { ConnectThread(serverIP, port); };
+
+        new Thread(threadstart).Start();
+    }
+
+    public void ConnectThread(string serverIP, int port)
+    {
+        IPEndPoint serverEndPoint = new IPEndPoint(IPAddress.Parse(serverIP), port);
+
         try
         {
-            socket.Connect(serverEP);
-            Debug.Log("Connected to server at " + ipAdress.ToString());
+            socket.Connect(serverEndPoint);
+            Debug.Log("Connected to server at " + serverIP.ToString());
         }
         catch (Exception e)
         {

@@ -19,11 +19,16 @@ public class LobbySearchUI : MonoBehaviour
     [SerializeField]
     private Text notFound = null;
 
+    [SerializeField]
+    private Client client = null;
+
+    // Properties
+    public InputField IPField { get { return IP; } }
+    public InputField portField { get { return port; } }
 
     // Internal
     bool IPOk   = false;
     bool portOk = false;
-
 
     // Methods
     private void OnValidate()

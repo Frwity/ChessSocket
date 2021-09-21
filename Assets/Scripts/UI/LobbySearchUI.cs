@@ -3,45 +3,56 @@ using UnityEngine.UI;
 
 public class LobbySearchUI : MonoBehaviour
 {
+    // Inspector
     [SerializeField]
-    private ScrollRect lobbies;
+    private InputField IP = null;
 
     [SerializeField]
-    private Button join;
+    private InputField port = null;
 
     [SerializeField]
-    private Toggle ready;
+    private Button join = null;
 
+    [SerializeField]
+    private Text found = null;
+
+    [SerializeField]
+    private Text notFound = null;
+
+
+    // Internal
+    bool IPOk   = false;
+    bool portOk = false;
+
+
+    // Methods
     private void OnValidate()
     {
-        if (lobbies == null)
-        {
-            lobbies = GetComponentInChildren<ScrollRect>();
-        }
-
-        if (join == null)
-        {
-            join = GetComponentInChildren<Button>();
-        }
-
-        if (ready == null)
-        {
-            ready = GetComponentInChildren<Toggle>();
-        }
+        join.interactable = false;
     }
 
-    private void Update()
+    private void Refresh()
     {
-        
+        join.interactable = IPOk && portOk;
+        found.enabled = false;
+        notFound.enabled = false;
     }
 
-    public void AddLobby(string lobbyName)
+    public void IPUpdated()
     {
-
+        IPOk = IP.text.Length > 0;
+        Refresh();
     }
 
-    public void RemoveLobby(string lobbyName)
+    public void PortUpdated()
     {
+        portOk = port.text.Length > 0;
+        Refresh();
+    }
 
+    public void SetFound(bool toggle)
+    {
+        found.enabled = toggle;
+        notFound.enabled = !toggle;
     }
 }

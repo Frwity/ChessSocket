@@ -87,9 +87,9 @@ public class ServerHost : MonoBehaviour
     
     public void CancelAcceptClient()
     {
-        //Disconnect();
-        //lobbyThread.Abort();
-        Debug.Log("Closing Lobby (WIP)");
+        Disconnect();
+        lobbyThread.Abort();
+        Debug.Log("Closing Lobby");
     }
 
     public void SendMessageToClient(string message)
@@ -154,17 +154,16 @@ public class ServerHost : MonoBehaviour
                 clientSocket.Close();
             }
         }
+    }
 
+    private void OnDestroy()
+    {
+        Disconnect();
         if (serverSocket != null)
         {
             Debug.Log("Closing Socket");
             // server Socket : no shutdown necessary
             serverSocket.Close();
         }
-    }
-
-    private void OnDestroy()
-    {
-        Disconnect();
     }
 }

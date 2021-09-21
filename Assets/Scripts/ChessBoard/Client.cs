@@ -9,6 +9,7 @@ using System.Threading;
 
 public class Client : MonoBehaviour
 {
+    Thread joinThread;
     Socket socket;
     private IPAddress networkIP;
     bool isReceiving = false;
@@ -60,7 +61,14 @@ public class Client : MonoBehaviour
 
         ThreadStart threadstart = delegate { ConnectThread(serverIP, port); };
 
-        new Thread(threadstart).Start();
+        joinThread = new Thread(threadstart);
+        joinThread.Start();
+    }
+
+    public void CancelJoinServer()
+    {
+        joinThread.Abort();
+        Debug.Log("Cancel Join");
     }
 
     public void ConnectThread(string serverIP, int port)

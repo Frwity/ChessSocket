@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using System;
 
 /*
  * This singleton manages the whole chess game
@@ -82,6 +83,7 @@ public partial class ChessGameMgr : MonoBehaviour
         }
     }
 
+    [Serializable]
     public struct Move
     {
         public int From;

@@ -9,6 +9,7 @@ using System.Threading;
 
 public class ServerHost : MonoBehaviour
 {
+    Thread lobbyThread;
     Socket serverSocket;
     int port = 11000;
     IPEndPoint localEP;
@@ -23,7 +24,7 @@ public class ServerHost : MonoBehaviour
         {
             localEP = new IPEndPoint(networkIP, port);
             serverSocket = new Socket(networkIP.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
-            Debug.Log("Starting Server");
+            Debug.Log("Initialazing Server");
             serverSocket.Bind(localEP);
             serverSocket.Listen(10);
         }
@@ -50,25 +51,23 @@ public class ServerHost : MonoBehaviour
         return false;
     }
 
-    void Start()
-    {
-        StartAcceptClient();
-    }
-
     void Update()
     {
         if (hasClient && !isReceiving)
             StartReceiveMessage();
 
-        if (Input.GetKeyDown(KeyCode.G))
+        if (Input.GetKeyDown(KeyCode.G) && hasClient)
             SendMessageToClient("salut le client");
     }
 
-    void StartAcceptClient()
+    public void StartAcceptClient()
     {
+        Debug.Log("Creating Lobby !");
+
         ThreadStart threadstart = delegate { AcceptClientThread(); };
 
-        new Thread(threadstart).Start();
+        lobbyThread = new Thread(threadstart);
+        lobbyThread.Start();
     }
 
     void AcceptClientThread()
@@ -85,9 +84,18 @@ public class ServerHost : MonoBehaviour
             Disconnect();
         }
     }
+    
+    public void CancelAcceptClient()
+    {
+        Disconnect();
+        lobbyThread.Abort();
+        Debug.Log("Closing Lobby");
+    }
 
     public void SendMessageToClient(string message)
     {
+        if (!hasClient)
+            return;
         byte[] msg = Encoding.ASCII.GetBytes(message);
         try
         {
@@ -129,7 +137,7 @@ public class ServerHost : MonoBehaviour
     {
         if (clientSocket != null)
         {
-            // shutdown client serverSocket
+            // shutdown client Socket
             try
             {
                 Debug.Log("Shutdown Client Socket");
@@ -146,17 +154,16 @@ public class ServerHost : MonoBehaviour
                 clientSocket.Close();
             }
         }
-
-        if (serverSocket != null)
-        {
-            Debug.Log("Closing Socket");
-            // server serverSocket : no shutdown necessary
-            serverSocket.Close();
-        }
     }
 
     private void OnDestroy()
     {
         Disconnect();
+        if (serverSocket != null)
+        {
+            Debug.Log("Closing Socket");
+            // server Socket : no shutdown necessary
+            serverSocket.Close();
+        }
     }
 }

@@ -9,6 +9,7 @@ using System.Threading;
 
 public class Client : MonoBehaviour
 {
+    Thread joinThread;
     Socket socket;
     private IPAddress networkIP;
     bool isReceiving = false;
@@ -19,7 +20,7 @@ public class Client : MonoBehaviour
         if (RegisterNetworkIP())
         {
             socket = new Socket(networkIP.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
-            Debug.Log("Client Creation");
+            Debug.Log("Initialazing Client");
         }
         else
         {
@@ -45,27 +46,29 @@ public class Client : MonoBehaviour
         return false;
     }
 
-    void Start()
-    {
-        StartConnect("10.2.102.167", 11000);
-    }
-
     void Update()
     {
         if (Connected && !isReceiving)
             StartReceiveMessage();
 
-        if (Input.GetKeyDown(KeyCode.F))
+        if (Input.GetKeyDown(KeyCode.F) && socket.Connected)
             SendMessageToServer("salut le server");
     }
 
-    void StartConnect(string serverIP, int port)
+    public void StartConnect(string serverIP, int port)
     {
         Debug.Log("Trying Connection To" + serverIP);
 
         ThreadStart threadstart = delegate { ConnectThread(serverIP, port); };
 
-        new Thread(threadstart).Start();
+        joinThread = new Thread(threadstart);
+        joinThread.Start();
+    }
+
+    public void CancelJoinServer()
+    {
+        joinThread.Abort();
+        Debug.Log("Cancel Join");
     }
 
     public void ConnectThread(string serverIP, int port)
@@ -86,6 +89,8 @@ public class Client : MonoBehaviour
 
     public void SendMessageToServer(string message)
     {
+        if (!Connected)
+            return;
         byte[] msg = Encoding.ASCII.GetBytes(message);
         try
         {
@@ -124,7 +129,7 @@ public class Client : MonoBehaviour
 
     public void Disconnect()
     {
-        if (socket != null)
+        if (socket != null && socket.Connected)
         {
             Debug.Log("Disconect Client Socket");
 

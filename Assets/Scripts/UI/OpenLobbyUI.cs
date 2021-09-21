@@ -11,7 +11,10 @@ public class OpenLobbyUI : MonoBehaviour
 
     [SerializeField]
     private Button play;
-    
+
+    [SerializeField]
+    private ServerHost serverHost = null;
+
     private void SetFound(bool toggle)
     {
         found.enabled   = play.interactable = toggle;

@@ -60,4 +60,9 @@ public class LobbySearchUI : MonoBehaviour
         found.enabled = toggle;
         notFound.enabled = !toggle;
     }
+
+    public void Connect()
+    {
+        client.StartConnect(IP.text, int.Parse(port.text));
+    }
 }

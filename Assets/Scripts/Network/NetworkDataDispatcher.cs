@@ -113,14 +113,16 @@ public class NetworkDataDispatcher : MonoBehaviour
 
             case ChessSerializer.DataType.BEGIN:
                 lobbySearchUI.gameObject.SetActive(false);
-                chessGameMgr.enabled = true;
                 chessGameMgr.gameObject.SetActive(true);
-                chessGameMgr.SetIAEnable(false);
                 inGameUI.gameObject.SetActive(true);
+
+                chessGameMgr.enabled = true;
+                chessGameMgr.SetIAEnable(false);
                 break;
 
             case ChessSerializer.DataType.COLOR:
-                chessGameMgr.SetPlayingAs((bool)chessObject.obj);
+                //chessGameMgr.SetPlayingAs(!((bool)chessObject.obj));
+                chessGameMgr.SetPlayingAs(false);
                 chessGameMgr.UpdateCameraRotation();
                 break;
 
@@ -141,5 +143,19 @@ public class NetworkDataDispatcher : MonoBehaviour
         else
             client.SendMessageToServer(message);
 
+    }
+
+    public void BeginGame()
+    {
+        SendBegin();
+
+        openLobbyUI.gameObject.SetActive(false);
+        chessGameMgr.gameObject.SetActive(true);
+        inGameUI.gameObject.SetActive(true);
+        
+        SendColor();
+
+        chessGameMgr.enabled = true;
+        chessGameMgr.UpdateCameraRotation();
     }
 }

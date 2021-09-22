@@ -15,6 +15,7 @@ public class ChessSerializer
         BEGIN = (READY << 1),
         COLOR = (BEGIN << 1),
         MOVE  = (COLOR << 1),
+        CHAT  = (MOVE  << 1)
     }
 
     [Serializable]

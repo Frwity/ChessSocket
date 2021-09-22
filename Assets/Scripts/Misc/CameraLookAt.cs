@@ -15,9 +15,9 @@ public class CameraLookAt : MonoBehaviour
 
 	void Update ()
     {
-        Vector3 position = transform.position;
-        position.y = height;
-        transform.position = position;
-        transform.LookAt(lookAt.position + Vector3.up * lookAtZ);
+        //Vector3 position = transform.position;
+        //position.y = height;
+        //transform.position = position;
+        //transform.LookAt(lookAt.position + Vector3.up * lookAtZ);
 	}
 }

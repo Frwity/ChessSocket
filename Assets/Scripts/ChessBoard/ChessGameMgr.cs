@@ -122,9 +122,6 @@ public partial class ChessGameMgr : MonoBehaviour
 
     #region chess game methods
 
-    private String pseudo;
-
-    [SerializeField]
     private GameObject boardCamera;
 
     BoardState boardState = null;
@@ -141,11 +138,6 @@ public partial class ChessGameMgr : MonoBehaviour
 
     public delegate void ScoreUpdateEvent(uint whiteScore, uint blackScore);
     public event ScoreUpdateEvent OnScoreUpdated = null;
-
-    public void ChangePseudo(Text newPseudo)
-    {
-        pseudo = newPseudo.text;
-    }
 
     public void SetIAEnable(bool newState)
     {
@@ -191,13 +183,13 @@ public partial class ChessGameMgr : MonoBehaviour
     {
         if (myTeam == EChessTeam.Black)
         {
-            boardCamera.transform.position = new Vector3(0f, 32f, 12f);
-            boardCamera.transform.rotation = Quaternion.Euler(69f, 180f, 0f);
+            Camera.main.transform.position = new Vector3(0f, 32f, 12f);
+            Camera.main.transform.rotation = Quaternion.Euler(69f, 180f, 0f);
         }
         else
         {
-            boardCamera.transform.position = new Vector3(0f, 32f, -12f);
-            boardCamera.transform.rotation = Quaternion.Euler(69f, 0f, 0f);
+            Camera.main.transform.position = new Vector3(0f, 32f, -12f);
+            Camera.main.transform.rotation = Quaternion.Euler(69f, 0f, 0f);
         }
     }
 

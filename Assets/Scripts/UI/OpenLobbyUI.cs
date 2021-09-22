@@ -18,14 +18,22 @@ public class OpenLobbyUI : MonoBehaviour
     [SerializeField]
     private ServerHost serverHost = null;
 
-    public void SetFound(bool toggle)
-    {
-        found.enabled   = play.interactable = toggle;
-        waiting.enabled = !toggle;
-    }
-
-    public void Awake()
+    private void Awake()
     {
         IP.text = "Lobby IP: " + serverHost.FullIP;
+    }
+
+    public void FoundOpponent(string name)
+    {
+        found.text = name + " joined. Ready to play";
+
+        found.enabled   = play.interactable = true;
+        waiting.enabled = false;
+    }
+
+    public void NoOpponent()
+    {
+        found.enabled   = play.interactable = false;
+        waiting.enabled = true;
     }
 }

@@ -2,6 +2,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
 using System;
 using UnityEngine;
+
 using static ChessGameMgr;
 
 public class ChessSerializer

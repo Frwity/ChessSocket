@@ -105,12 +105,12 @@ public class NetworkDataDispatcher : MonoBehaviour
                 openLobbyUI.FoundOpponent((string)chessObject.obj);
                 lobbySearchUI.FoundOpponent((string)chessObject.obj);
                 break;
-                
+
             case ChessSerializer.DataType.READY:
                 openLobbyUI.OpponentReady((bool)chessObject.obj);
                 lobbySearchUI.OpponentReady((bool)chessObject.obj);
                 break;
-                
+
             case ChessSerializer.DataType.BEGIN:
                 lobbySearchUI.gameObject.SetActive(false);
                 chessGameMgr.enabled = true;
@@ -118,15 +118,16 @@ public class NetworkDataDispatcher : MonoBehaviour
                 chessGameMgr.SetIAEnable(false);
                 inGameUI.gameObject.SetActive(true);
                 break;
-                
+
             case ChessSerializer.DataType.COLOR:
                 chessGameMgr.SetPlayingAs((bool)chessObject.obj);
+                chessGameMgr.UpdateCameraRotation();
                 break;
-                
+
             case ChessSerializer.DataType.MOVE:
                 chessGameMgr.SetOpponentMove((ChessGameMgr.Move)chessObject.obj);
                 break;
-                
+
             default:
                 Debug.LogError("Something is very wrong: the default case was reached in ProcessData()");
                 break;

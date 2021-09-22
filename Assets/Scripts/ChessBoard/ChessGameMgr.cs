@@ -51,7 +51,7 @@ public partial class ChessGameMgr : MonoBehaviour
     public enum EChessTeam
     {
         White = 0,
-        Black,
+        Black = 1,
         None
     }
 
@@ -299,6 +299,7 @@ public partial class ChessGameMgr : MonoBehaviour
 
     void Start()
     {
+        myTeam = (EChessTeam)UnityEngine.Random.Range(0, 2);
         pieceLayerMask = 1 << LayerMask.NameToLayer("Piece");
         boardLayerMask = 1 << LayerMask.NameToLayer("Board");
 

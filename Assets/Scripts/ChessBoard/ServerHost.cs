@@ -131,7 +131,10 @@ public class ServerHost : MonoBehaviour
             byte[] messageReceived = new byte[1024];
             int nbBytes = clientSocket.Receive(messageReceived);
             if (nbBytes > 0)
+            {
                 Debug.Log(Encoding.ASCII.GetString(messageReceived, 0, nbBytes));
+                NetworkDataDispatcher.ProcessReceivedMessage(messageReceived);
+            }
         }
         catch (Exception e)
         {

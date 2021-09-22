@@ -9,6 +9,7 @@ using System.Threading;
 
 public class ServerHost : MonoBehaviour
 {
+    NetworkDataDispatcher networkDataDispatcher;
     Thread lobbyThread;
     Socket serverSocket;
     int port = 11000;
@@ -26,8 +27,10 @@ public class ServerHost : MonoBehaviour
         }
     }
 
-    void Awake()
+    public void Awake()
     {
+        if (!enabled)
+            return;
         if (RegisterNetworkIP())
         {
             localEP = new IPEndPoint(networkIP, port);
@@ -35,11 +38,17 @@ public class ServerHost : MonoBehaviour
             Debug.Log("Initialazing Server");
             serverSocket.Bind(localEP);
             serverSocket.Listen(10);
+            StartAcceptClient();
         }
         else
         {
             Debug.Log("[SERVER] Could not find this machine's IP LAN address. Are you connected to a network?");
         }
+    }
+
+    public void Start()
+    {
+        networkDataDispatcher = GetComponent<NetworkDataDispatcher>();
     }
 
     private bool RegisterNetworkIP()
@@ -64,8 +73,8 @@ public class ServerHost : MonoBehaviour
         if (hasClient && !isReceiving)
             StartReceiveMessage();
 
-        if (Input.GetKeyDown(KeyCode.G) && hasClient)
-            SendMessageToClient("salut le client");
+        //if (Input.GetKeyDown(KeyCode.G) && hasClient)
+        //    SendMessageToClient("salut le client");
     }
 
     public void StartAcceptClient()
@@ -100,14 +109,13 @@ public class ServerHost : MonoBehaviour
         Debug.Log("Closing Lobby");
     }
 
-    public void SendMessageToClient(string message)
+    public void SendMessageToClient(byte[] message)
     {
         if (!hasClient)
             return;
-        byte[] msg = Encoding.ASCII.GetBytes(message);
         try
         {
-            clientSocket.Send(msg);
+            clientSocket.Send(message);
         }
         catch (Exception e)
         {
@@ -133,7 +141,7 @@ public class ServerHost : MonoBehaviour
             if (nbBytes > 0)
             {
                 Debug.Log(Encoding.ASCII.GetString(messageReceived, 0, nbBytes));
-                NetworkDataDispatcher.ProcessReceivedMessage(messageReceived);
+                networkDataDispatcher.ProcessReceivedMessage(messageReceived);
             }
         }
         catch (Exception e)
@@ -165,6 +173,7 @@ public class ServerHost : MonoBehaviour
                 clientSocket.Close();
             }
         }
+        serverSocket.Close();
     }
 
     private void OnDestroy()

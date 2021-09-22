@@ -7,7 +7,39 @@ public class NetworkDataDispatcher : MonoBehaviour
     [SerializeField]
     ChessGameMgr chessGameMgr = null;
 
-    public static void ProcessReceivedMessage(byte[] message)
+    Client client;
+    ServerHost serverHost;
+
+    private bool isHost = false;
+
+    private void Start()
+    {
+        client = GetComponent<Client>();
+        serverHost = GetComponent<ServerHost>();
+    }
+
+    public void SetHost(bool state)
+    {
+        isHost = state;
+        if (isHost)
+        {
+            if (client.enabled)
+                client.Disconnect();
+            client.enabled = false;
+            serverHost.enabled = true;
+            serverHost.Awake();
+        }
+        else
+        {
+            if (serverHost.enabled)
+                serverHost.Disconnect();
+            serverHost.enabled = false;
+            client.enabled = true;
+            client.Awake();
+        }
+    }
+
+    public void ProcessReceivedMessage(byte[] message)
     {
         ChessSerializer.ChessObject chessObject = ChessSerializer.Deserialize(message);
 
@@ -24,5 +56,14 @@ public class NetworkDataDispatcher : MonoBehaviour
             default:
                 break;
         }
+    }
+
+    public void SendMessage(byte[] message)
+    {
+        if (isHost)
+            serverHost.SendMessageToClient(message);
+        else
+            client.SendMessageToServer(message);
+
     }
 }

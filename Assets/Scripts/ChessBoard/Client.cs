@@ -9,14 +9,17 @@ using System.Threading;
 
 public class Client : MonoBehaviour
 {
+    NetworkDataDispatcher networkDataDispatcher;
     Thread joinThread;
     Socket socket;
     private IPAddress networkIP;
     bool isReceiving = false;
     public bool Connected { get { return socket.Connected; } }
 
-    private void Awake()
+    public void Awake()
     {
+        if (!enabled)
+            return;
         if (RegisterNetworkIP())
         {
             socket = new Socket(networkIP.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
@@ -27,6 +30,11 @@ public class Client : MonoBehaviour
             Debug.Log("[CLIENT] Could not find this machine's IP LAN address. Are you connected to a network?");
             Disconnect();
         }
+    }
+
+    private void Start()
+    {
+        networkDataDispatcher = GetComponent<NetworkDataDispatcher>();
     }
 
     public bool RegisterNetworkIP()
@@ -51,8 +59,8 @@ public class Client : MonoBehaviour
         if (Connected && !isReceiving)
             StartReceiveMessage();
 
-        if (Input.GetKeyDown(KeyCode.F) && socket.Connected)
-            SendMessageToServer("salut le server");
+        //if (Input.GetKeyDown(KeyCode.F) && socket.Connected)
+        //    SendMessageToServer("salut le server");
     }
 
     public void StartConnect(string serverIP, int port)
@@ -88,14 +96,13 @@ public class Client : MonoBehaviour
         }
     }
 
-    public void SendMessageToServer(string message)
+    public void SendMessageToServer(byte[] message)
     {
         if (!Connected)
             return;
-        byte[] msg = Encoding.ASCII.GetBytes(message);
         try
         {
-            socket.Send(msg);
+            socket.Send(message);
         }
         catch (Exception e)
         {
@@ -120,7 +127,7 @@ public class Client : MonoBehaviour
             if (nbBytes > 0)
             {
                 Debug.Log(Encoding.ASCII.GetString(messageReceived, 0, nbBytes));
-                NetworkDataDispatcher.ProcessReceivedMessage(messageReceived);
+                networkDataDispatcher.ProcessReceivedMessage(messageReceived);
             }
         }
         catch (Exception e)

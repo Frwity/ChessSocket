@@ -18,7 +18,7 @@ public class OpenLobbyUI : MonoBehaviour
     [SerializeField]
     private ServerHost serverHost = null;
 
-    private void Awake()
+    private void Start()
     {
         IP.text = "Lobby IP: " + serverHost.FullIP;
     }

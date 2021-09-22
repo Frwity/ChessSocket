@@ -110,7 +110,9 @@ public class NetworkDataDispatcher : MonoBehaviour
                 lobbySearchUI.OpponentReady((bool)chessObject.obj);
                 break;
             case ChessSerializer.DataType.BEGIN:
+                lobbySearchUI.gameObject.SetActive(false);
                 chessGameMgr.enabled = true;
+                chessGameMgr.gameObject.SetActive(true);
                 chessGameMgr.SetIAEnable(false);
                 break;
             case ChessSerializer.DataType.COLOR:

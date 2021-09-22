@@ -9,6 +9,11 @@ public class OpenLobbyUI : MonoBehaviour
     [SerializeField]
     private InputField pseudo = null;
 
+    public string Pseudo
+    {
+        get { return pseudo.text; }
+    }
+
     [SerializeField]
     private InputField IP = null;
 
@@ -20,6 +25,8 @@ public class OpenLobbyUI : MonoBehaviour
 
     [SerializeField]
     private ServerHost serverHost = null;
+
+
 
     private void Awake()
     {

@@ -61,6 +61,31 @@ public class NetworkDataDispatcher : MonoBehaviour
         }
     }
 
+    // Message types
+    public void SendPseudo()
+    {
+        byte[] msg = ChessSerializer.Serialize(ChessSerializer.DataType.NAME, lobbySearchUI.Pseudo);
+        SendMessage(msg);
+    }
+
+    public void SendBegin()
+    {
+        byte[] begin = ChessSerializer.Serialize(ChessSerializer.DataType.BEGIN, true);
+        SendMessage(begin);
+    }
+
+    public void SendColor()
+    {
+        byte[] color = ChessSerializer.Serialize(ChessSerializer.DataType.COLOR, chessGameMgr.Color);
+        SendMessage(color);
+    }
+
+    public void SendMove(ChessGameMgr.Move move)
+    {
+        byte[] moveByte = ChessSerializer.Serialize(ChessSerializer.DataType.MOVE, move);
+        SendMessage(moveByte);
+    }
+
     public void Receive(byte[] packet)
     {
         dataQueue.Enqueue(ChessSerializer.Deserialize(packet));
@@ -78,6 +103,7 @@ public class NetworkDataDispatcher : MonoBehaviour
             case ChessSerializer.DataType.NAME:
                 inGameUI.SetOpponentPseudo((string)chessObject.obj);
                 openLobbyUI.FoundOpponent((string)chessObject.obj);
+                lobbySearchUI.FoundOpponent((string)chessObject.obj);
                 break;
             case ChessSerializer.DataType.READY:
                 openLobbyUI.OpponentReady((bool)chessObject.obj);

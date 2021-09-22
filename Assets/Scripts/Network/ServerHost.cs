@@ -1,11 +1,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
+using UnityEngine;
+using UnityEngine.Events;
 
 public class ServerHost : MonoBehaviour
 {
@@ -19,6 +20,9 @@ public class ServerHost : MonoBehaviour
     bool isReceiving = false;
 
     private NetworkDataDispatcher dispatcher = null;
+
+    [SerializeField]
+    public UnityEvent onConnectionEstablished;
 
     public string FullIP
     {
@@ -91,6 +95,7 @@ public class ServerHost : MonoBehaviour
         {
             clientSocket = serverSocket.Accept();
             Debug.Log("Accepted Client !");
+            onConnectionEstablished?.Invoke();
             hasClient = true;
         }
         catch (Exception e)

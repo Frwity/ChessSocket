@@ -7,6 +7,9 @@ public class OpenLobbyUI : MonoBehaviour
     private Text waiting = null;
 
     [SerializeField]
+    private InputField pseudo = null;
+
+    [SerializeField]
     private InputField IP = null;
 
     [SerializeField]
@@ -18,9 +21,19 @@ public class OpenLobbyUI : MonoBehaviour
     [SerializeField]
     private ServerHost serverHost = null;
 
+    private void Awake()
+    {
+        play.interactable = false;
+    }
+
     private void Start()
     {
         IP.text = "Lobby IP: " + serverHost.FullIP;
+    }
+
+    public void PseudoUpdated()
+    {
+        play.interactable = (pseudo.text.Length > 0) & found.enabled;
     }
 
     public void FoundOpponent(string name)

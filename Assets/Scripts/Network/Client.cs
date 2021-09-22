@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -16,6 +17,9 @@ public class Client : MonoBehaviour
     public bool Connected { get { return socket.Connected; } }
 
     private NetworkDataDispatcher dispatcher = null;
+
+    [SerializeField]
+    public UnityEvent onConnectionEstablished;
 
     public void Awake()
     {
@@ -63,7 +67,7 @@ public class Client : MonoBehaviour
 
     public void StartConnect(string serverIP, int port)
     {
-        Debug.Log("Trying Connection To" + serverIP);
+        Debug.Log("Trying to connect to " + serverIP);
 
         ThreadStart threadstart = delegate { ConnectThread(serverIP, port); };
 
@@ -85,6 +89,7 @@ public class Client : MonoBehaviour
         try
         {
             socket.Connect(serverEndPoint);
+            onConnectionEstablished?.Invoke();
             Debug.Log("Connected to server at " + serverIP.ToString());
         }
         catch (Exception e)
@@ -98,6 +103,7 @@ public class Client : MonoBehaviour
     {
         if (!Connected)
             return;
+
         try
         {
             socket.Send(message);

@@ -23,7 +23,7 @@ public class ChessAI : MonoBehaviour
 
     #region AI
 
-    public ChessGameMgr.Move ComputeMove()
+    public ChessGameMgr.Move ComputeMove(ChessGameMgr.EChessTeam team)
     {
         // random AI move
 
@@ -32,7 +32,7 @@ public class ChessAI : MonoBehaviour
         move.To = 1;
 
         List<ChessGameMgr.Move> moves = new List<ChessGameMgr.Move>(); ;
-        ChessGameMgr.Instance.GetBoardState().GetValidMoves(ChessGameMgr.EChessTeam.Black, moves);
+        ChessGameMgr.Instance.GetBoardState().GetValidMoves(team, moves);
 
         if (moves.Count > 0)
             move = moves[Random.Range(0, moves.Count - 1)];

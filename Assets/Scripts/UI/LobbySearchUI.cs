@@ -5,6 +5,9 @@ public class LobbySearchUI : MonoBehaviour
 {
     // Inspector
     [SerializeField]
+    private InputField pseudo = null;
+
+    [SerializeField]
     private InputField IP = null;
 
     [SerializeField]
@@ -27,8 +30,9 @@ public class LobbySearchUI : MonoBehaviour
     public InputField portField { get { return port; } }
 
     // Internal
-    bool IPOk   = false;
-    bool portOk = false;
+    bool pseudoOK = false;
+    bool IPOk     = false;
+    bool portOk   = false;
 
     // Methods
     private void OnValidate()
@@ -38,9 +42,15 @@ public class LobbySearchUI : MonoBehaviour
 
     private void Refresh()
     {
-        join.interactable = IPOk && portOk;
-        found.enabled = false;
-        notFound.enabled = false;
+        join.interactable = IPOk & portOk & pseudoOK;
+        found.enabled     = false;
+        notFound.enabled  = false;
+    }
+
+    public void PseudoUpdated()
+    {
+        pseudoOK = pseudo.text.Length > 0;
+        Refresh();
     }
 
     public void IPUpdated()

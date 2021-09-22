@@ -42,7 +42,7 @@ public class NetworkDataDispatcher : MonoBehaviour
                 chessGameMgr.PlayTurn((ChessGameMgr.Move)chessObject.obj);
                 break;
             default:
-                
+                Debug.LogError("Something is very wrong: the default case was reached in ProcessReceivedMessage()");
                 break;
         }
     }

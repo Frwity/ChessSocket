@@ -18,6 +18,14 @@ public class ServerHost : MonoBehaviour
     bool hasClient = false;
     bool isReceiving = false;
 
+    public string FullIP
+    {
+        get
+        {
+            return networkIP.ToString() + ":" + port.ToString();
+        }
+    }
+
     void Awake()
     {
         if (RegisterNetworkIP())
@@ -34,7 +42,7 @@ public class ServerHost : MonoBehaviour
         }
     }
 
-    public bool RegisterNetworkIP()
+    private bool RegisterNetworkIP()
     {
         IPHostEntry host = Dns.GetHostEntry(Dns.GetHostName());
 

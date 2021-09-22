@@ -15,6 +15,8 @@ public class Client : MonoBehaviour
     bool isReceiving = false;
     public bool Connected { get { return socket.Connected; } }
 
+    private NetworkDataDispatcher dispatcher = null;
+
     private void Awake()
     {
         if (RegisterNetworkIP())
@@ -27,6 +29,8 @@ public class Client : MonoBehaviour
             Debug.Log("[CLIENT] Could not find this machine's IP LAN address. Are you connected to a network?");
             Disconnect();
         }
+
+        dispatcher = FindObjectOfType<NetworkDataDispatcher>();
     }
 
     public bool RegisterNetworkIP()
@@ -120,7 +124,7 @@ public class Client : MonoBehaviour
             if (nbBytes > 0)
             {
                 Debug.Log(Encoding.ASCII.GetString(messageReceived, 0, nbBytes));
-                NetworkDataDispatcher.ProcessReceivedMessage(messageReceived);
+                dispatcher.ProcessReceivedMessage(messageReceived);
             }
         }
         catch (Exception e)

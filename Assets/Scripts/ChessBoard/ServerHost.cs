@@ -18,6 +18,8 @@ public class ServerHost : MonoBehaviour
     bool hasClient = false;
     bool isReceiving = false;
 
+    private NetworkDataDispatcher dispatcher = null;
+
     public string FullIP
     {
         get
@@ -40,6 +42,8 @@ public class ServerHost : MonoBehaviour
         {
             Debug.Log("[SERVER] Could not find this machine's IP LAN address. Are you connected to a network?");
         }
+
+        dispatcher = FindObjectOfType<NetworkDataDispatcher>();
     }
 
     private bool RegisterNetworkIP()
@@ -133,7 +137,7 @@ public class ServerHost : MonoBehaviour
             if (nbBytes > 0)
             {
                 Debug.Log(Encoding.ASCII.GetString(messageReceived, 0, nbBytes));
-                NetworkDataDispatcher.ProcessReceivedMessage(messageReceived);
+                dispatcher.ProcessReceivedMessage(messageReceived);
             }
         }
         catch (Exception e)

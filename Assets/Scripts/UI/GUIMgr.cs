@@ -8,6 +8,11 @@ using System.Collections;
 
 public class GUIMgr : MonoBehaviour
 {
+    [SerializeField]
+    public Text myPseudo;
+
+    [SerializeField]
+    public Text opponentPseudo;
 
     #region singleton
     static GUIMgr instance = null;
@@ -42,15 +47,25 @@ public class GUIMgr : MonoBehaviour
         ChessGameMgr.Instance.OnScoreUpdated += UpdateScore;
     }
 	
+    void UpdateScore(uint whiteScore, uint blackScore)
+    {
+        whiteScoreText.text = string.Format("White : {0}", whiteScore);
+        blackScoreText.text = string.Format("Black : {0}", blackScore);
+    }
+
     public void DisplayTurn(bool isWhiteMove)
     {
         whiteToMoveTr.gameObject.SetActive(isWhiteMove);
         blackToMoveTr.gameObject.SetActive(!isWhiteMove);
     }
 
-    void UpdateScore(uint whiteScore, uint blackScore)
+    public void SetMyPseudo(Text pseudo)
     {
-        whiteScoreText.text = string.Format("White : {0}", whiteScore);
-        blackScoreText.text = string.Format("Black : {0}", blackScore);
+        myPseudo.text = pseudo.text;
+    }
+
+    public void SetOpponentPseudo(string pseudo)
+    {
+        opponentPseudo.text = pseudo;
     }
 }

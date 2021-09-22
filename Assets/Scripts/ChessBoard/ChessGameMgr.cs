@@ -122,8 +122,6 @@ public partial class ChessGameMgr : MonoBehaviour
 
     #region chess game methods
 
-    private String pseudo;
-
     private GameObject boardCamera;
 
     BoardState boardState = null;
@@ -140,11 +138,6 @@ public partial class ChessGameMgr : MonoBehaviour
 
     public delegate void ScoreUpdateEvent(uint whiteScore, uint blackScore);
     public event ScoreUpdateEvent OnScoreUpdated = null;
-
-    public void ChangePseudo(Text newPseudo)
-    {
-        pseudo = newPseudo.text;
-    }
 
     public void SetIAEnable(bool newState)
     {

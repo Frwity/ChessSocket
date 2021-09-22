@@ -42,11 +42,6 @@ public class LobbySearchUI : MonoBehaviour
         join.interactable = false;
     }
 
-    private void Awake()
-    {
-        dispatcher = FindObjectOfType<NetworkDataDispatcher>();
-    }
-
     private void Refresh()
     {
         join.interactable = IPOk & portOk & pseudoOK;
@@ -86,7 +81,7 @@ public class LobbySearchUI : MonoBehaviour
     public void SendPseudo()
     {
         byte[] msg = ChessSerializer.Serialize(ChessSerializer.DataType.NAME, pseudo.text);
-        dispatcher.SendMessage(msg);
+        FindObjectOfType<NetworkDataDispatcher>().SendMessage(msg);
     }
 
     public void OpponentReady(bool toggle)

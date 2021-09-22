@@ -122,6 +122,8 @@ public partial class ChessGameMgr : MonoBehaviour
 
     #region chess game methods
 
+    NetworkDataDispatcher networkDataDispatcher;
+
     BoardState boardState = null;
     public BoardState GetBoardState() { return boardState; }
 
@@ -314,6 +316,8 @@ public partial class ChessGameMgr : MonoBehaviour
             OnScoreUpdated(scores[0], scores[1]);
 
         gameObject.SetActive(false);
+
+        networkDataDispatcher = FindObjectOfType<NetworkDataDispatcher>();
     }
 
     void Update()
@@ -464,6 +468,9 @@ public partial class ChessGameMgr : MonoBehaviour
                 move.To = destPos;
 
                 PlayTurn(move);
+
+                if (IsPlayingOnline)
+                    networkDataDispatcher.SendMove(move);
 
                 UpdatePieces();
             }

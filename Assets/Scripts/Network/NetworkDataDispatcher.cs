@@ -27,6 +27,11 @@ public class NetworkDataDispatcher : MonoBehaviour
 
     private bool isHost = false;
 
+    public string Pseudo
+    {
+        get { return isHost ?openLobbyUI.Pseudo : lobbySearchUI.Pseudo; }
+    }
+
     private void Start()
     {
         dataQueue = new ConcurrentQueue<ChessObject>();
@@ -64,7 +69,7 @@ public class NetworkDataDispatcher : MonoBehaviour
     // Message types
     public void SendPseudo()
     {
-        string pseudo = isHost ? openLobbyUI.Pseudo : lobbySearchUI.Pseudo
+        string pseudo = isHost ? openLobbyUI.Pseudo : lobbySearchUI.Pseudo;
         byte[] msg = ChessSerializer.Serialize(ChessSerializer.DataType.NAME, pseudo);
         SendMessage(msg);
     }
@@ -85,6 +90,12 @@ public class NetworkDataDispatcher : MonoBehaviour
     {
         byte[] moveByte = ChessSerializer.Serialize(ChessSerializer.DataType.MOVE, move);
         SendMessage(moveByte);
+    }
+
+    public void SendChat(string chat)
+    {
+        byte[] message = ChessSerializer.Serialize(ChessSerializer.DataType.CHAT, chat);
+        SendMessage(message);
     }
 
     public void Receive(byte[] packet)

@@ -64,7 +64,8 @@ public class NetworkDataDispatcher : MonoBehaviour
     // Message types
     public void SendPseudo()
     {
-        byte[] msg = ChessSerializer.Serialize(ChessSerializer.DataType.NAME, lobbySearchUI.Pseudo);
+        string pseudo = isHost ? openLobbyUI.Pseudo : lobbySearchUI.Pseudo
+        byte[] msg = ChessSerializer.Serialize(ChessSerializer.DataType.NAME, pseudo);
         SendMessage(msg);
     }
 

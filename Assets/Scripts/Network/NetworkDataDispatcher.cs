@@ -121,8 +121,7 @@ public class NetworkDataDispatcher : MonoBehaviour
                 break;
 
             case ChessSerializer.DataType.COLOR:
-                //chessGameMgr.SetPlayingAs(!((bool)chessObject.obj));
-                chessGameMgr.SetPlayingAs(false);
+                chessGameMgr.SetPlayingAs(!((bool)chessObject.obj));
                 chessGameMgr.UpdateCameraRotation();
                 break;
 

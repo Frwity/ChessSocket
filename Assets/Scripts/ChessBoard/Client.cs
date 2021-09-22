@@ -19,6 +19,8 @@ public class Client : MonoBehaviour
 
     private void Awake()
     {
+        if (!enabled)
+            return;
         if (RegisterNetworkIP())
         {
             socket = new Socket(networkIP.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
@@ -55,8 +57,8 @@ public class Client : MonoBehaviour
         if (Connected && !isReceiving)
             StartReceiveMessage();
 
-        if (Input.GetKeyDown(KeyCode.F) && socket.Connected)
-            SendMessageToServer("salut le server");
+        //if (Input.GetKeyDown(KeyCode.F) && socket.Connected)
+        //    SendMessageToServer("salut le server");
     }
 
     public void StartConnect(string serverIP, int port)
@@ -92,14 +94,13 @@ public class Client : MonoBehaviour
         }
     }
 
-    public void SendMessageToServer(string message)
+    public void SendMessageToServer(byte[] message)
     {
         if (!Connected)
             return;
-        byte[] msg = Encoding.ASCII.GetBytes(message);
         try
         {
-            socket.Send(msg);
+            socket.Send(message);
         }
         catch (Exception e)
         {

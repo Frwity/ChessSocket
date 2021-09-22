@@ -28,8 +28,10 @@ public class ServerHost : MonoBehaviour
         }
     }
 
-    void Awake()
+    public void Awake()
     {
+        if (!enabled)
+            return;
         if (RegisterNetworkIP())
         {
             localEP = new IPEndPoint(networkIP, port);
@@ -37,6 +39,7 @@ public class ServerHost : MonoBehaviour
             Debug.Log("Initialazing Server");
             serverSocket.Bind(localEP);
             serverSocket.Listen(10);
+            StartAcceptClient();
         }
         else
         {
@@ -68,8 +71,8 @@ public class ServerHost : MonoBehaviour
         if (hasClient && !isReceiving)
             StartReceiveMessage();
 
-        if (Input.GetKeyDown(KeyCode.G) && hasClient)
-            SendMessageToClient("salut le client");
+        //if (Input.GetKeyDown(KeyCode.G) && hasClient)
+        //    SendMessageToClient("salut le client");
     }
 
     public void StartAcceptClient()
@@ -104,14 +107,13 @@ public class ServerHost : MonoBehaviour
         Debug.Log("Closing Lobby");
     }
 
-    public void SendMessageToClient(string message)
+    public void SendMessageToClient(byte[] message)
     {
         if (!hasClient)
             return;
-        byte[] msg = Encoding.ASCII.GetBytes(message);
         try
         {
-            clientSocket.Send(msg);
+            clientSocket.Send(message);
         }
         catch (Exception e)
         {
@@ -169,6 +171,7 @@ public class ServerHost : MonoBehaviour
                 clientSocket.Close();
             }
         }
+        serverSocket.Close();
     }
 
     private void OnDestroy()

@@ -67,8 +67,11 @@ public class Client : MonoBehaviour
 
     public void CancelJoinServer()
     {
-        joinThread.Abort();
-        Debug.Log("Cancel Join");
+        if (joinThread != null)
+        {
+            joinThread.Abort();
+            Debug.Log("Cancel Join");
+        }
     }
 
     public void ConnectThread(string serverIP, int port)

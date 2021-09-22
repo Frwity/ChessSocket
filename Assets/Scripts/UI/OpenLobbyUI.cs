@@ -18,7 +18,7 @@ public class OpenLobbyUI : MonoBehaviour
     [SerializeField]
     private ServerHost serverHost = null;
 
-    private void Awake()
+    private void Start()
     {
         IP.text = "Lobby IP: " + serverHost.FullIP;
     }
@@ -35,5 +35,15 @@ public class OpenLobbyUI : MonoBehaviour
     {
         found.enabled   = play.interactable = false;
         waiting.enabled = true;
+    }
+
+    public void OpponentReady(bool toggle)
+    {
+
+    }
+
+    public void SendReady()
+    {
+
     }
 }

@@ -15,8 +15,12 @@ public class Client : MonoBehaviour
     bool isReceiving = false;
     public bool Connected { get { return socket.Connected; } }
 
-    private void Awake()
+    private NetworkDataDispatcher dispatcher = null;
+
+    public void Awake()
     {
+        if (!enabled)
+            return;
         if (RegisterNetworkIP())
         {
             socket = new Socket(networkIP.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
@@ -27,6 +31,8 @@ public class Client : MonoBehaviour
             Debug.Log("[CLIENT] Could not find this machine's IP LAN address. Are you connected to a network?");
             Disconnect();
         }
+
+        dispatcher = FindObjectOfType<NetworkDataDispatcher>();
     }
 
     public bool RegisterNetworkIP()
@@ -51,8 +57,8 @@ public class Client : MonoBehaviour
         if (Connected && !isReceiving)
             StartReceiveMessage();
 
-        if (Input.GetKeyDown(KeyCode.F) && socket.Connected)
-            SendMessageToServer("salut le server");
+        //if (Input.GetKeyDown(KeyCode.F) && socket.Connected)
+        //    SendMessageToServer("salut le server");
     }
 
     public void StartConnect(string serverIP, int port)
@@ -88,14 +94,13 @@ public class Client : MonoBehaviour
         }
     }
 
-    public void SendMessageToServer(string message)
+    public void SendMessageToServer(byte[] message)
     {
         if (!Connected)
             return;
-        byte[] msg = Encoding.ASCII.GetBytes(message);
         try
         {
-            socket.Send(msg);
+            socket.Send(message);
         }
         catch (Exception e)
         {
@@ -120,7 +125,7 @@ public class Client : MonoBehaviour
             if (nbBytes > 0)
             {
                 Debug.Log(Encoding.ASCII.GetString(messageReceived, 0, nbBytes));
-                NetworkDataDispatcher.ProcessReceivedMessage(messageReceived);
+                dispatcher.ProcessReceivedMessage(messageReceived);
             }
         }
         catch (Exception e)

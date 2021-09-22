@@ -12,7 +12,8 @@ public class ChessSerializer
         NAME  = (1     << 0),
         READY = (NAME  << 1),
         BEGIN = (READY << 1),
-        MOVE  = (BEGIN << 1),
+        COLOR = (BEGIN << 1),
+        MOVE  = (COLOR << 1),
     }
 
     [Serializable]

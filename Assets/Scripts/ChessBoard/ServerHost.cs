@@ -171,7 +171,8 @@ public class ServerHost : MonoBehaviour
                 clientSocket.Close();
             }
         }
-        serverSocket.Close();
+        if (serverSocket != null)
+            serverSocket.Close();
     }
 
     private void OnDestroy()

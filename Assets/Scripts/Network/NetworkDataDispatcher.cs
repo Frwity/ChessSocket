@@ -113,6 +113,7 @@ public class NetworkDataDispatcher : MonoBehaviour
 
             case ChessSerializer.DataType.BEGIN:
                 lobbySearchUI.gameObject.SetActive(false);
+                chessGameMgr.SetPlayingAs(false);
                 chessGameMgr.enabled = true;
                 chessGameMgr.gameObject.SetActive(true);
                 chessGameMgr.SetIAEnable(false);

@@ -36,6 +36,7 @@ public class ServerHost : MonoBehaviour
     {
         if (!enabled)
             return;
+            
         if (RegisterNetworkIP())
         {
             localEP = new IPEndPoint(networkIP, port);

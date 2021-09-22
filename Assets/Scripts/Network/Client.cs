@@ -15,6 +15,7 @@ public class Client : MonoBehaviour
     private IPAddress networkIP;
     bool isReceiving = false;
     public bool Connected { get { return socket.Connected; } }
+    private bool gotConnected = false;
 
     private NetworkDataDispatcher dispatcher = null;
 
@@ -58,8 +59,17 @@ public class Client : MonoBehaviour
 
     void Update()
     {
-        if (Connected && !isReceiving)
-            StartReceiveMessage();
+        if (Connected)
+        {
+            if (gotConnected)
+            {
+                onConnectionEstablished?.Invoke();
+                gotConnected = false;
+            }
+
+            if (!isReceiving)
+                StartReceiveMessage();
+        }
 
         //if (Input.GetKeyDown(KeyCode.F) && socket.Connected)
         //    SendMessageToServer("salut le server");
@@ -89,7 +99,7 @@ public class Client : MonoBehaviour
         try
         {
             socket.Connect(serverEndPoint);
-            onConnectionEstablished?.Invoke();
+            gotConnected = true;
             Debug.Log("Connected to server at " + serverIP.ToString());
         }
         catch (Exception e)

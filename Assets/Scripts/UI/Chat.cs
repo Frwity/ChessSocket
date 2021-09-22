@@ -26,6 +26,12 @@ public class Chat : MonoBehaviour
         dispatcher = FindObjectOfType<NetworkDataDispatcher>();
     }
 
+    public void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Return))
+            Send();
+    }
+
     public void Send()
     {
         if (writeField.text.Length <= 0)

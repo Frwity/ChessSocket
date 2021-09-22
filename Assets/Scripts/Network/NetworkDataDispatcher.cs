@@ -91,7 +91,7 @@ public class NetworkDataDispatcher : MonoBehaviour
                 chessGameMgr.SetPlayingAs((bool)chessObject.obj);
                 break;
             case ChessSerializer.DataType.MOVE:
-                chessGameMgr.PlayTurn((ChessGameMgr.Move)chessObject.obj);
+                chessGameMgr.SetOpponentMove((ChessGameMgr.Move)chessObject.obj);
                 break;
             default:
                 Debug.LogError("Something is very wrong: the default case was reached in ProcessData()");

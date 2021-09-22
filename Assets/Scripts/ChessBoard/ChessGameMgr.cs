@@ -122,8 +122,6 @@ public partial class ChessGameMgr : MonoBehaviour
 
     #region chess game methods
 
-    private GameObject boardCamera;
-
     BoardState boardState = null;
     public BoardState GetBoardState() { return boardState; }
 
@@ -138,6 +136,15 @@ public partial class ChessGameMgr : MonoBehaviour
 
     public delegate void ScoreUpdateEvent(uint whiteScore, uint blackScore);
     public event ScoreUpdateEvent OnScoreUpdated = null;
+
+    Move opponenentMove;
+    bool hasOpponentMove;
+
+    public void SetOpponentMove(Move move)
+    {
+        opponenentMove = move;
+        hasOpponentMove = true;
+    }
 
     public void SetIAEnable(bool newState)
     {
@@ -315,7 +322,15 @@ public partial class ChessGameMgr : MonoBehaviour
         if (teamTurn == myTeam)
             UpdatePlayerTurn();
         // wait online move
-        else if (IsPlayingOnline) { }
+        else if (IsPlayingOnline) 
+        { 
+            if (hasOpponentMove)
+            {
+                PlayTurn(opponenentMove);
+                UpdatePieces();
+                hasOpponentMove = false;
+            }
+        }
         // AI play
         else if (IsAIEnabled)
             UpdateAITurn();

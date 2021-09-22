@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections.Generic;
 using System;
 
@@ -25,8 +26,8 @@ public partial class ChessGameMgr : MonoBehaviour
     }
     #endregion
 
-    [SerializeField]
-    private bool IsAIEnabled = true;
+    private bool IsAIEnabled = false;
+    private bool IsPlayingOnline = false;
 
     private ChessAI chessAI = null;
     private Transform boardTransform = null;
@@ -121,10 +122,16 @@ public partial class ChessGameMgr : MonoBehaviour
 
     #region chess game methods
 
+    private String pseudo;
+
+    private GameObject boardCamera;
+
     BoardState boardState = null;
     public BoardState GetBoardState() { return boardState; }
 
     EChessTeam teamTurn;
+
+    EChessTeam myTeam = EChessTeam.White;
 
     List<uint> scores;
 
@@ -133,6 +140,29 @@ public partial class ChessGameMgr : MonoBehaviour
 
     public delegate void ScoreUpdateEvent(uint whiteScore, uint blackScore);
     public event ScoreUpdateEvent OnScoreUpdated = null;
+
+    public void ChangePseudo(Text newPseudo)
+    {
+        pseudo = newPseudo.text;
+    }
+
+    public void SetIAEnable(bool newState)
+    {
+        IsAIEnabled = newState;
+    }
+
+    public void SetPlayingOnline(bool newState)
+    {
+        IsPlayingOnline = newState;
+    }
+
+    public void SetPlayingAs(bool team)
+    {
+        if (team)
+            myTeam = EChessTeam.White;
+        else
+            myTeam = EChessTeam.Black;
+    }
 
     public void PrepareGame(bool resetScore = true)
     {
@@ -153,6 +183,20 @@ public partial class ChessGameMgr : MonoBehaviour
             scores.Clear();
             scores.Add(0);
             scores.Add(0);
+        }
+    }
+
+    public void UpdateCameraRotation()
+    {
+        if (myTeam == EChessTeam.Black)
+        {
+            Camera.main.transform.position = new Vector3(0f, 32f, 12f);
+            Camera.main.transform.rotation = Quaternion.Euler(69f, 180f, 0f);
+        }
+        else
+        {
+            Camera.main.transform.position = new Vector3(0f, 32f, -12f);
+            Camera.main.transform.rotation = Quaternion.Euler(69f, 0f, 0f);
         }
     }
 
@@ -186,7 +230,7 @@ public partial class ChessGameMgr : MonoBehaviour
             }
             // raise event
             if (OnPlayerTurn != null)
-                OnPlayerTurn(teamTurn == EChessTeam.White);
+                OnPlayerTurn(teamTurn == myTeam);
         }
     }
 
@@ -275,9 +319,11 @@ public partial class ChessGameMgr : MonoBehaviour
     void Update()
     {
         // human player always plays white
-        if (teamTurn == EChessTeam.White)
+        if (teamTurn == myTeam)
             UpdatePlayerTurn();
-        // AI plays black
+        // wait online move
+        else if (IsPlayingOnline) { }
+        // AI play
         else if (IsAIEnabled)
             UpdateAITurn();
         else
@@ -377,7 +423,7 @@ public partial class ChessGameMgr : MonoBehaviour
 
     void UpdateAITurn()
     {
-        Move move = chessAI.ComputeMove();
+        Move move = chessAI.ComputeMove(teamTurn);
         PlayTurn(move);
 
         UpdatePieces();

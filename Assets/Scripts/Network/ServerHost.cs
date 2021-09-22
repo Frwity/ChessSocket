@@ -20,6 +20,7 @@ public class ServerHost : MonoBehaviour
     bool isReceiving = false;
 
     private NetworkDataDispatcher dispatcher = null;
+    private bool gotConnected = false;
 
     [SerializeField]
     public UnityEvent onConnectionEstablished;
@@ -36,7 +37,7 @@ public class ServerHost : MonoBehaviour
     {
         if (!enabled)
             return;
-            
+
         if (RegisterNetworkIP())
         {
             localEP = new IPEndPoint(networkIP, port);
@@ -73,8 +74,17 @@ public class ServerHost : MonoBehaviour
 
     void Update()
     {
-        if (hasClient && !isReceiving)
-            StartReceiveMessage();
+        if (hasClient)
+        {
+            if (gotConnected)
+            {
+                onConnectionEstablished?.Invoke();
+                gotConnected = false;
+            }
+
+            if (!isReceiving)
+                StartReceiveMessage();
+        }
 
         //if (Input.GetKeyDown(KeyCode.G) && hasClient)
         //    SendMessageToClient("salut le client");
@@ -96,7 +106,7 @@ public class ServerHost : MonoBehaviour
         {
             clientSocket = serverSocket.Accept();
             Debug.Log("Accepted Client !");
-            onConnectionEstablished?.Invoke();
+            gotConnected = true;
             hasClient = true;
         }
         catch (Exception e)

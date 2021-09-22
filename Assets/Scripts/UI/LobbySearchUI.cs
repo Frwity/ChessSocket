@@ -25,6 +25,8 @@ public class LobbySearchUI : MonoBehaviour
     [SerializeField]
     private Client client = null;
 
+    NetworkDataDispatcher dispatcher = null;
+
     // Properties
     public InputField IPField { get { return IP; } }
     public InputField portField { get { return port; } }
@@ -38,6 +40,11 @@ public class LobbySearchUI : MonoBehaviour
     private void OnValidate()
     {
         join.interactable = false;
+    }
+
+    private void Awake()
+    {
+        dispatcher = FindObjectOfType<NetworkDataDispatcher>();
     }
 
     private void Refresh()
@@ -74,6 +81,12 @@ public class LobbySearchUI : MonoBehaviour
     public void Connect()
     {
         client.StartConnect(IP.text, int.Parse(port.text));
+    }
+
+    public void SendPseudo()
+    {
+        byte[] msg = ChessSerializer.Serialize(ChessSerializer.DataType.NAME, pseudo.text);
+        dispatcher.SendMessage(msg);
     }
 
     public void OpponentReady(bool toggle)

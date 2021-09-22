@@ -36,4 +36,14 @@ public class OpenLobbyUI : MonoBehaviour
         found.enabled   = play.interactable = false;
         waiting.enabled = true;
     }
+
+    public void OpponentReady(bool toggle)
+    {
+
+    }
+
+    public void SendReady()
+    {
+
+    }
 }

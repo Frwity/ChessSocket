@@ -75,4 +75,14 @@ public class LobbySearchUI : MonoBehaviour
     {
         client.StartConnect(IP.text, int.Parse(port.text));
     }
+
+    public void OpponentReady(bool toggle)
+    {
+
+    }
+
+    public void SendReady()
+    {
+
+    }
 }

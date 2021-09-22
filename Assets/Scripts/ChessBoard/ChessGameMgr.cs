@@ -131,6 +131,11 @@ public partial class ChessGameMgr : MonoBehaviour
 
     EChessTeam myTeam = EChessTeam.White;
 
+    public bool Color
+    {
+        get { return myTeam == EChessTeam.White; }
+    }
+
     List<uint> scores;
 
     public delegate void PlayerTurnEvent(bool isWhiteMove);

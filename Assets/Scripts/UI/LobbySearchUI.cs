@@ -7,6 +7,11 @@ public class LobbySearchUI : MonoBehaviour
     [SerializeField]
     private InputField pseudo = null;
 
+    public string Pseudo
+    {
+        get { return pseudo.text; }
+    }
+
     [SerializeField]
     private InputField IP = null;
 
@@ -24,9 +29,7 @@ public class LobbySearchUI : MonoBehaviour
 
     [SerializeField]
     private Client client = null;
-
-    NetworkDataDispatcher dispatcher = null;
-
+    
     // Properties
     public InputField IPField { get { return IP; } }
     public InputField portField { get { return port; } }
@@ -73,15 +76,15 @@ public class LobbySearchUI : MonoBehaviour
         notFound.enabled = !toggle;
     }
 
+    public void FoundOpponent(string name)
+    {
+        SetFound(true);
+        found.text = "Connected to " + name + ". The host will launch the game";
+    }
+
     public void Connect()
     {
         client.StartConnect(IP.text, int.Parse(port.text));
-    }
-
-    public void SendPseudo()
-    {
-        byte[] msg = ChessSerializer.Serialize(ChessSerializer.DataType.NAME, pseudo.text);
-        FindObjectOfType<NetworkDataDispatcher>().SendMessage(msg);
     }
 
     public void OpponentReady(bool toggle)

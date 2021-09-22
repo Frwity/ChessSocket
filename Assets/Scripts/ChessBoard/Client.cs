@@ -17,7 +17,7 @@ public class Client : MonoBehaviour
 
     private NetworkDataDispatcher dispatcher = null;
 
-    private void Awake()
+    public void Awake()
     {
         if (!enabled)
             return;

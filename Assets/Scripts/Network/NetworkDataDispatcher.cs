@@ -21,6 +21,9 @@ public class NetworkDataDispatcher : MonoBehaviour
 
     [SerializeField]
     private LobbySearchUI lobbySearchUI = null;
+
+    [SerializeField]
+    private Chat chat = null;
     
     Client client;
     ServerHost serverHost;
@@ -139,6 +142,10 @@ public class NetworkDataDispatcher : MonoBehaviour
 
             case ChessSerializer.DataType.MOVE:
                 chessGameMgr.SetOpponentMove((ChessGameMgr.Move)chessObject.obj);
+                break;
+
+            case ChessSerializer.DataType.CHAT:
+                chat.Receive((string)chessObject.obj);
                 break;
 
             default:

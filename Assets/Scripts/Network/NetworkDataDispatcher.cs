@@ -24,7 +24,10 @@ public class NetworkDataDispatcher : MonoBehaviour
 
     [SerializeField]
     private Chat chat = null;
-    
+
+    [SerializeField]
+    private LeaveGame leaveGame = null;
+
     Client client;
     ServerHost serverHost;
 
@@ -148,6 +151,10 @@ public class NetworkDataDispatcher : MonoBehaviour
                 chat.Receive((string)chessObject.obj);
                 break;
 
+            case ChessSerializer.DataType.QUIT:
+                //leave function
+                break;
+
             default:
                 Debug.LogError("Something is very wrong: the default case was reached in ProcessData()");
                 break;
@@ -167,6 +174,7 @@ public class NetworkDataDispatcher : MonoBehaviour
     {
         SendBegin();
 
+        leaveGame.setCanLeave(true);
         openLobbyUI.gameObject.SetActive(false);
         chessGameMgr.gameObject.SetActive(true);
         inGameUI.gameObject.SetActive(true);

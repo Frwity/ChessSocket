@@ -192,11 +192,21 @@ public class NetworkDataDispatcher : MonoBehaviour
     {
         leaveGame.setCanLeave(true);
         if (isHost)
+        {
             if (openLobbyUI != null)
+            {
+                serverHost.Disconnect();
                 openLobbyUI.NoOpponent();
+            }
+        }
         else
+        {
             if (lobbySearchUI != null)
+            {
+                client.Disconnect();
                 lobbySearchUI.SetFound(false);
+            }
+        }
 
         if (chessGameMgr != null)
         {

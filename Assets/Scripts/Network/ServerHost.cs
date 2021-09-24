@@ -174,7 +174,7 @@ public class ServerHost : MonoBehaviour
 
     public void Disconnect()
     {
-        if (clientSocket != null)
+        if (clientSocket != null && clientSocket.Connected)
         {
             // shutdown client Socket
             try

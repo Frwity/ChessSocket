@@ -200,8 +200,8 @@ public class NetworkDataDispatcher : MonoBehaviour
         
         SendColor();
 
-        chessGameMgr.PrepareGame();
         chessGameMgr.enabled = true;
+        chessGameMgr.PrepareGame();
         chessGameMgr.UpdateCameraRotation();
     }
 

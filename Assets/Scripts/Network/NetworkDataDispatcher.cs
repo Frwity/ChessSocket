@@ -128,7 +128,12 @@ public class NetworkDataDispatcher : MonoBehaviour
 
     public void Receive(byte[] packet)
     {
-        dataQueue.Enqueue(ChessSerializer.Deserialize(packet));
+        ChessObject obj = ChessSerializer.Deserialize(packet);
+
+        if (obj.type != ChessSerializer.DataType.PING)
+        {
+            dataQueue.Enqueue(obj);
+        }
     }
 
     public void ProcessData()

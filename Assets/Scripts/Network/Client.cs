@@ -73,14 +73,13 @@ public class Client : MonoBehaviour
         }
         if (hasServer)
         {
-            byte[] ping = System.Text.Encoding.ASCII.GetBytes("ping");
-            socket.Send(ping);
             if (!socket.Connected)
             {
                 dispatcher.QuitGame();
                 Disconnect();
                 hasServer = false;
             }
+            dispatcher.SendPing();
         }
     }
 

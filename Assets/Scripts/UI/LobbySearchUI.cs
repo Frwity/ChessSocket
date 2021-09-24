@@ -40,6 +40,14 @@ public class LobbySearchUI : MonoBehaviour
         join.interactable = false;
     }
 
+    private void Update()
+    {
+        if (pseudo.isFocused && Input.GetKey(KeyCode.Tab))
+        {
+            IP.ActivateInputField();
+        }
+    }
+
     private void Refresh()
     {
         join.interactable = IPOk & pseudoOK;

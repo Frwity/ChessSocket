@@ -7,7 +7,7 @@ public class LeaveGame : MonoBehaviour
     [SerializeField]
     public GameObject leaveMenu;
 
-    private bool canLeave = true;
+    private bool canLeave = false;
 
     public void setCanLeave(bool state)
     {

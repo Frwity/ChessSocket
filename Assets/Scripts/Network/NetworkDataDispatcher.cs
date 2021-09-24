@@ -20,6 +20,9 @@ public class NetworkDataDispatcher : MonoBehaviour
     private ChessGameMgr chessGameMgr = null;
 
     [SerializeField]
+    private GameObject startMenu = null;
+
+    [SerializeField]
     private GUIMgr inGameUI = null;
 
     [SerializeField]
@@ -190,7 +193,8 @@ public class NetworkDataDispatcher : MonoBehaviour
 
     public void QuitGame()
     {
-        leaveGame.setCanLeave(true);
+        leaveGame.setCanLeave(false);
+        leaveGame.gameObject.SetActive(false);
         if (isHost)
         {
             if (openLobbyUI != null)
@@ -215,5 +219,7 @@ public class NetworkDataDispatcher : MonoBehaviour
         }
         if (inGameUI != null)
             inGameUI.gameObject.SetActive(false);
+
+        startMenu.SetActive(true);
     }
 }

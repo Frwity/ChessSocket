@@ -89,6 +89,7 @@ public class ServerHost : MonoBehaviour
             {
                 dispatcher.QuitGame();
                 Disconnect();
+                hasClient = false;
             }
         }
     }

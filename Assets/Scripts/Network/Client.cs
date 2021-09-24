@@ -75,6 +75,7 @@ public class Client : MonoBehaviour
         {
             dispatcher.QuitGame();
             Disconnect();
+            hasServer = false;
         }
     }
 

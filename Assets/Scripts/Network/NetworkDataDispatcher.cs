@@ -10,6 +10,12 @@ public class NetworkDataDispatcher : MonoBehaviour
 {
     ConcurrentQueue<ChessObject> dataQueue;
 
+    [Header("Network")]
+    [SerializeField]
+    [Range(1024, 49151)]
+    private int port = 5683;
+
+    [Header("Managed objects")]
     [SerializeField]
     private ChessGameMgr chessGameMgr = null;
 
@@ -28,10 +34,15 @@ public class NetworkDataDispatcher : MonoBehaviour
     [SerializeField]
     private LeaveGame leaveGame = null;
 
-    Client client;
-    ServerHost serverHost;
+    private ServerHost serverHost;
+    private Client     client;
 
-    private bool isHost = false;
+    private bool       isHost = false;
+
+    public int Port
+    {
+        get { return port; }
+    }
 
     public string Pseudo
     {

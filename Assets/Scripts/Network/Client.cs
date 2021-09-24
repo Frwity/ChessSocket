@@ -75,11 +75,11 @@ public class Client : MonoBehaviour
         //    SendMessageToServer("salut le server");
     }
 
-    public void StartConnect(string serverIP, int port)
+    public void StartConnect(string serverIP)
     {
         Debug.Log("Trying to connect to " + serverIP);
 
-        ThreadStart threadstart = delegate { ConnectThread(serverIP, port); };
+        ThreadStart threadstart = delegate { ConnectThread(serverIP); };
 
         joinThread = new Thread(threadstart);
         joinThread.Start();
@@ -92,9 +92,9 @@ public class Client : MonoBehaviour
         Debug.Log("Cancel Join");
     }
 
-    public void ConnectThread(string serverIP, int port)
+    public void ConnectThread(string serverIP)
     {
-        IPEndPoint serverEndPoint = new IPEndPoint(IPAddress.Parse(serverIP), port);
+        IPEndPoint serverEndPoint = new IPEndPoint(IPAddress.Parse(serverIP), dispatcher.Port);
 
         try
         {

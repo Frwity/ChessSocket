@@ -88,6 +88,12 @@ public class NetworkDataDispatcher : MonoBehaviour
         SendMessage(begin);
     }
 
+    public void SendQuit()
+    {
+        byte[] quit = ChessSerializer.Serialize(ChessSerializer.DataType.QUIT, true);
+        SendMessage(quit);
+    }
+
     public void SendColor()
     {
         byte[] color = ChessSerializer.Serialize(ChessSerializer.DataType.COLOR, chessGameMgr.Color);
@@ -149,7 +155,16 @@ public class NetworkDataDispatcher : MonoBehaviour
                 break;
 
             case ChessSerializer.DataType.QUIT:
-                //leave function
+                leaveGame.setCanLeave(false);
+                if (isHost)
+                    openLobbyUI.gameObject.SetActive(true);
+                else
+                    lobbySearchUI.gameObject.SetActive(true);
+
+                chessGameMgr.gameObject.SetActive(false);
+                inGameUI.gameObject.SetActive(false);
+
+                chessGameMgr.enabled = false;
                 break;
 
             default:
@@ -180,4 +195,21 @@ public class NetworkDataDispatcher : MonoBehaviour
         chessGameMgr.enabled = true;
         chessGameMgr.UpdateCameraRotation();
     }
+
+    public void QuitGame()
+    {
+        SendQuit();
+
+        leaveGame.setCanLeave(true);
+        if (isHost)
+            openLobbyUI.gameObject.SetActive(true);
+        else
+            lobbySearchUI.gameObject.SetActive(true);
+
+        chessGameMgr.gameObject.SetActive(false);
+        inGameUI.gameObject.SetActive(false);
+
+        chessGameMgr.enabled = false;
+    }
+
 }

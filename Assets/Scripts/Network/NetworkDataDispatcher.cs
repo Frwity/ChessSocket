@@ -189,7 +189,10 @@ public class NetworkDataDispatcher : MonoBehaviour
 
     public void SendAndQuitGame()
     {
-        SendQuit();
+        if (isHost)
+            serverHost.Disconnect();
+        else
+            client.Disconnect();
         QuitGame();
     }
 

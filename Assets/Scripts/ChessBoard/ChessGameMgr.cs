@@ -196,6 +196,8 @@ public partial class ChessGameMgr : MonoBehaviour
             scores.Add(0);
             scores.Add(0);
         }
+
+        Debug.Log("ResetBoard ????????????");
     }
 
     public void UpdateCameraRotation()

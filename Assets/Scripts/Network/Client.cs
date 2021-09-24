@@ -16,7 +16,7 @@ public class Client : MonoBehaviour
     bool isReceiving = false;
     public bool Connected { get { return socket.Connected; } }
     private bool gotConnected = false;
-    private bool destroyed = false;
+
     private NetworkDataDispatcher dispatcher = null;
 
     [SerializeField]
@@ -161,19 +161,12 @@ public class Client : MonoBehaviour
 
             socket.Shutdown(SocketShutdown.Both);
             socket.Close();
+            dispatcher.QuitGame();
         }
-        dispatcher.SendQuit();
-    }
-
-    private void OnApplicationQuit()
-    {
-        Disconnect();
-        destroyed = true;
     }
 
     private void OnDestroy()
     {
-        if (!destroyed)
-            Disconnect();
+        Disconnect();
     }
 }

@@ -18,7 +18,6 @@ public class ServerHost : MonoBehaviour
     Socket clientSocket;
     bool hasClient = false;
     bool isReceiving = false;
-    bool destroyed = false;
 
     private NetworkDataDispatcher dispatcher = null;
     private bool gotConnected = false;
@@ -191,18 +190,12 @@ public class ServerHost : MonoBehaviour
         }
         if (serverSocket != null)
             serverSocket.Close();
-        dispatcher.SendQuit();
-    }
-
-    private void OnApplicationQuit()
-    {
-        Disconnect();
-        destroyed = true;
+        if (dispatcher != null)
+            dispatcher.QuitGame();
     }
 
     private void OnDestroy()
     {
-        if (!destroyed)
-            Disconnect();
+        Disconnect();
     }
 }

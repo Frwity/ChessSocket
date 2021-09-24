@@ -190,8 +190,7 @@ public class ServerHost : MonoBehaviour
         }
         if (serverSocket != null)
             serverSocket.Close();
-        if (dispatcher != null)
-            dispatcher.QuitGame();
+        dispatcher.SendQuit();
     }
 
     private void OnDestroy()

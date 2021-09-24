@@ -161,8 +161,8 @@ public class Client : MonoBehaviour
 
             socket.Shutdown(SocketShutdown.Both);
             socket.Close();
-            dispatcher.QuitGame();
         }
+        dispatcher.SendQuit();
     }
 
     private void OnDestroy()

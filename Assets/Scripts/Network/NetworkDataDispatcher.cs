@@ -141,6 +141,7 @@ public class NetworkDataDispatcher : MonoBehaviour
                 break;
 
             case ChessSerializer.DataType.BEGIN:
+                leaveGame.setCanLeave(true);
                 lobbySearchUI.gameObject.SetActive(false);
                 chessGameMgr.gameObject.SetActive(true);
                 inGameUI.gameObject.SetActive(true);
@@ -151,6 +152,7 @@ public class NetworkDataDispatcher : MonoBehaviour
 
             case ChessSerializer.DataType.COLOR:
                 chessGameMgr.SetPlayingAs(!((bool)chessObject.obj));
+                chessGameMgr.PrepareGame();
                 chessGameMgr.UpdateCameraRotation();
                 break;
 
@@ -195,6 +197,7 @@ public class NetworkDataDispatcher : MonoBehaviour
     public void QuitGame()
     {
         leaveGame.setCanLeave(false);
+        leaveGame.transform.GetChild(0).gameObject.SetActive(false);
         if (isHost)
         {
             if (openLobbyUI != null)

@@ -19,8 +19,16 @@ public class Client : MonoBehaviour
     private bool hasServer = false;
     private NetworkDataDispatcher dispatcher = null;
 
+
+    [SerializeField]
+    [Range(.1f, 5f)]
+    private float pingDelay = 1f;
+
+    private float pingTimer = 0f;
+
     [SerializeField]
     public UnityEvent onConnectionEstablished;
+
 
     public void Awake()
     {
@@ -79,7 +87,13 @@ public class Client : MonoBehaviour
                 Disconnect();
                 hasServer = false;
             }
-            //dispatcher.SendPing();
+
+            pingTimer += Time.deltaTime;
+            if (pingTimer >= pingDelay)
+            {
+                dispatcher.SendPing();
+                pingTimer = 0f;
+            }
         }
     }
 

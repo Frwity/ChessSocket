@@ -22,6 +22,12 @@ public class ServerHost : MonoBehaviour
     private bool gotConnected = false;
 
     [SerializeField]
+    [Range(.1f, 5f)]
+    private float pingDelay = 1f;
+
+    private float pingTimer = 0f;
+
+    [SerializeField]
     public UnityEvent onConnectionEstablished;
 
     public string IP
@@ -91,7 +97,13 @@ public class ServerHost : MonoBehaviour
                 Disconnect();
                 hasClient = false;
             }
-            //dispatcher.SendPing();
+
+            pingTimer += Time.deltaTime;
+            if (pingTimer >= pingDelay)
+            {
+                dispatcher.SendPing();
+                pingTimer = 0f;
+            }
         }
     }
 
@@ -172,7 +184,7 @@ public class ServerHost : MonoBehaviour
 
     public void Disconnect()
     {
-        if (clientSocket != null && clientSocket.Connected)
+        if (clientSocket != null)
         {
             // shutdown client Socket
             try

@@ -91,7 +91,7 @@ public class ServerHost : MonoBehaviour
                 Disconnect();
                 hasClient = false;
             }
-            dispatcher.SendPing();
+            //dispatcher.SendPing();
         }
     }
 
@@ -159,8 +159,6 @@ public class ServerHost : MonoBehaviour
             int nbBytes = clientSocket.Receive(messageReceived);
             if (nbBytes > 0)
             {
-                // Debug.Log(Encoding.ASCII.GetString(messageReceived, 0, nbBytes));
-                Debug.Log("Packet received");
                 dispatcher.Receive(messageReceived);
             }
         }

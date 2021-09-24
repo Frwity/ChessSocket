@@ -120,20 +120,20 @@ public class NetworkDataDispatcher : MonoBehaviour
         SendMessage(message);
     }
 
-    public void SendPing()
-    {
-        byte[] ping = ChessSerializer.Serialize(ChessSerializer.DataType.PING, "ping");
-        SendMessage(ping);
-    }
+    //public void SendPing()
+    //{
+    //    byte[] ping = ChessSerializer.Serialize(ChessSerializer.DataType.PING, "ping");
+    //    SendMessage(ping);
+    //}
 
     public void Receive(byte[] packet)
     {
         ChessObject obj = ChessSerializer.Deserialize(packet);
 
-        if (obj.type != ChessSerializer.DataType.PING)
-        {
+        //if (obj.type != ChessSerializer.DataType.PING)
+        //{
             dataQueue.Enqueue(obj);
-        }
+        //}
     }
 
     public void ProcessData()

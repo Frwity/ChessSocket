@@ -130,11 +130,6 @@ public class NetworkDataDispatcher : MonoBehaviour
                 lobbySearchUI.FoundOpponent((string)chessObject.obj);
                 break;
 
-            case ChessSerializer.DataType.READY:
-                openLobbyUI.OpponentReady((bool)chessObject.obj);
-                lobbySearchUI.OpponentReady((bool)chessObject.obj);
-                break;
-
             case ChessSerializer.DataType.BEGIN:
                 lobbySearchUI.gameObject.SetActive(false);
                 chessGameMgr.gameObject.SetActive(true);
@@ -158,16 +153,7 @@ public class NetworkDataDispatcher : MonoBehaviour
                 break;
 
             case ChessSerializer.DataType.QUIT:
-                leaveGame.setCanLeave(false);
-                if (isHost)
-                    openLobbyUI.gameObject.SetActive(true);
-                else
-                    lobbySearchUI.gameObject.SetActive(true);
-
-                chessGameMgr.gameObject.SetActive(false);
-                inGameUI.gameObject.SetActive(false);
-
-                chessGameMgr.enabled = false;
+                QuitGame();
                 break;
 
             default:
@@ -200,20 +186,29 @@ public class NetworkDataDispatcher : MonoBehaviour
         chessGameMgr.UpdateCameraRotation();
     }
 
-    public void QuitGame()
+    public void SendAndQuitGame()
     {
         SendQuit();
-
-        leaveGame.setCanLeave(true);
-        if (isHost)
-            openLobbyUI.gameObject.SetActive(true);
-        else
-            lobbySearchUI.gameObject.SetActive(true);
-
-        chessGameMgr.gameObject.SetActive(false);
-        inGameUI.gameObject.SetActive(false);
-
-        chessGameMgr.enabled = false;
+        QuitGame();
     }
 
+    public void QuitGame()
+    {
+        leaveGame.setCanLeave(true);
+        if (isHost)
+            if (openLobbyUI != null)
+                openLobbyUI.NoOpponent();
+        else
+            if (lobbySearchUI != null)
+                lobbySearchUI.SetFound(false);
+
+        if (chessGameMgr != null)
+        {
+            chessGameMgr.gameObject.SetActive(false);
+            chessGameMgr.enabled = false;
+        }
+        if (inGameUI != null)
+            inGameUI.gameObject.SetActive(false);
+
+    }
 }

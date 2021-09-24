@@ -11,8 +11,7 @@ public class ChessSerializer
     public enum DataType
     {
         NAME  = (1     << 0),
-        READY = (NAME  << 1),
-        BEGIN = (READY << 1),
+        BEGIN = (NAME << 1),
         COLOR = (BEGIN << 1),
         MOVE  = (COLOR << 1),
         CHAT  = (MOVE  << 1),

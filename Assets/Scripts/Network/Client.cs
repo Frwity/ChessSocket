@@ -16,7 +16,6 @@ public class Client : MonoBehaviour
     bool isReceiving = false;
     public bool Connected { get { return socket.Connected; } }
     private bool gotConnected = false;
-
     private NetworkDataDispatcher dispatcher = null;
 
     [SerializeField]
@@ -69,10 +68,13 @@ public class Client : MonoBehaviour
 
             if (!isReceiving)
                 StartReceiveMessage();
-        }
 
-        //if (Input.GetKeyDown(KeyCode.F) && socket.Connected)
-        //    SendMessageToServer("salut le server");
+            if (!socket.Connected)
+            {
+                dispatcher.QuitGame();
+                Disconnect();
+            }
+        }
     }
 
     public void StartConnect(string serverIP, int port)
@@ -161,7 +163,6 @@ public class Client : MonoBehaviour
 
             socket.Shutdown(SocketShutdown.Both);
             socket.Close();
-            dispatcher.QuitGame();
         }
     }
 

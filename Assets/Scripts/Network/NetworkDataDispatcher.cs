@@ -88,12 +88,6 @@ public class NetworkDataDispatcher : MonoBehaviour
         SendMessage(begin);
     }
 
-    public void SendQuit()
-    {
-        byte[] quit = ChessSerializer.Serialize(ChessSerializer.DataType.QUIT, true);
-        SendMessage(quit);
-    }
-
     public void SendColor()
     {
         byte[] color = ChessSerializer.Serialize(ChessSerializer.DataType.COLOR, chessGameMgr.Color);
@@ -154,10 +148,6 @@ public class NetworkDataDispatcher : MonoBehaviour
                 chat.Receive((string)chessObject.obj);
                 break;
 
-            case ChessSerializer.DataType.QUIT:
-                QuitGame();
-                break;
-
             default:
                 Debug.LogError("Something is very wrong: the default case was reached in ProcessData()");
                 break;
@@ -187,12 +177,6 @@ public class NetworkDataDispatcher : MonoBehaviour
         chessGameMgr.UpdateCameraRotation();
     }
 
-    public void SendAndQuitGame()
-    {
-        SendQuit();
-        QuitGame();
-    }
-
     public void QuitGame()
     {
         leaveGame.setCanLeave(true);
@@ -210,6 +194,5 @@ public class NetworkDataDispatcher : MonoBehaviour
         }
         if (inGameUI != null)
             inGameUI.gameObject.SetActive(false);
-
     }
 }

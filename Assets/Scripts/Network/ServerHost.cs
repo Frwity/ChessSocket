@@ -84,10 +84,13 @@ public class ServerHost : MonoBehaviour
 
             if (!isReceiving)
                 StartReceiveMessage();
-        }
 
-        //if (Input.GetKeyDown(KeyCode.G) && hasClient)
-        //    SendMessageToClient("salut le client");
+            if (!clientSocket.Connected)
+            {
+                dispatcher.QuitGame();
+                Disconnect();
+            }
+        }
     }
 
     public void StartAcceptClient()
@@ -190,8 +193,6 @@ public class ServerHost : MonoBehaviour
         }
         if (serverSocket != null)
             serverSocket.Close();
-        if (dispatcher != null)
-            dispatcher.QuitGame();
     }
 
     private void OnDestroy()

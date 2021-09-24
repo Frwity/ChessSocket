@@ -6,20 +6,26 @@ public class Chat : MonoBehaviour
 {
     [SerializeField]
     private InputField writeField;
-    NetworkDataDispatcher dispatcher = null;
 
     [SerializeField]
     Text text1;
+
     [SerializeField]
     Text text2;
+
     [SerializeField]
     Text text3;
+
     [SerializeField]
     Text text4;
+
     [SerializeField]
     Text text5;
+
     [SerializeField]
     Text text6;
+
+    private NetworkDataDispatcher dispatcher = null;
 
     private void Start()
     {

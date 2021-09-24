@@ -122,7 +122,7 @@ public class NetworkDataDispatcher : MonoBehaviour
 
     public void SendPing()
     {
-        byte[] ping = ChessSerializer.Serialize(ChessSerializer.DataType.CHAT, "ping");
+        byte[] ping = ChessSerializer.Serialize(ChessSerializer.DataType.PING, "ping");
         SendMessage(ping);
     }
 

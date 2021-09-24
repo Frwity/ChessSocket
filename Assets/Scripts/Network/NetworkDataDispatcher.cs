@@ -11,7 +11,7 @@ public class NetworkDataDispatcher : MonoBehaviour
     ConcurrentQueue<ChessObject> dataQueue;
 
     [SerializeField]
-    ChessGameMgr chessGameMgr = null;
+    private ChessGameMgr chessGameMgr = null;
 
     [SerializeField]
     private GUIMgr inGameUI = null;
@@ -35,14 +35,13 @@ public class NetworkDataDispatcher : MonoBehaviour
 
     public string Pseudo
     {
-        get { return isHost ?openLobbyUI.Pseudo : lobbySearchUI.Pseudo; }
+        get { return isHost ? openLobbyUI.Pseudo : lobbySearchUI.Pseudo; }
     }
 
     private void Start()
     {
-        dataQueue = new ConcurrentQueue<ChessObject>();
-
-        client = GetComponent<Client>();
+        dataQueue  = new ConcurrentQueue<ChessObject>();
+        client     = GetComponent<Client>();
         serverHost = GetComponent<ServerHost>();
     }
 
@@ -54,10 +53,12 @@ public class NetworkDataDispatcher : MonoBehaviour
     public void SetHost(bool state)
     {
         isHost = state;
+
         if (isHost)
         {
             if (client.enabled)
                 client.Disconnect();
+
             client.enabled = false;
             serverHost.enabled = true;
             serverHost.Awake();
@@ -66,6 +67,7 @@ public class NetworkDataDispatcher : MonoBehaviour
         {
             if (serverHost.enabled)
                 serverHost.Disconnect();
+
             serverHost.enabled = false;
             client.enabled = true;
             client.Awake();
@@ -168,7 +170,6 @@ public class NetworkDataDispatcher : MonoBehaviour
             serverHost.SendMessageToClient(message);
         else
             client.SendMessageToServer(message);
-
     }
 
     public void BeginGame()

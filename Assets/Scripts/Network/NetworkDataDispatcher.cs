@@ -187,6 +187,7 @@ public class NetworkDataDispatcher : MonoBehaviour
         
         SendColor();
 
+        chessGameMgr.PrepareGame();
         chessGameMgr.enabled = true;
         chessGameMgr.UpdateCameraRotation();
     }
@@ -194,7 +195,6 @@ public class NetworkDataDispatcher : MonoBehaviour
     public void QuitGame()
     {
         leaveGame.setCanLeave(false);
-        leaveGame.gameObject.SetActive(false);
         if (isHost)
         {
             if (openLobbyUI != null)

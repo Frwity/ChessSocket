@@ -76,8 +76,8 @@ public class ServerHost : MonoBehaviour
     {
         if (hasClient)
         {
-
-            clientSocket.Send(System.Text.Encoding.ASCII.GetBytes("ping"));
+            byte[] ping = System.Text.Encoding.ASCII.GetBytes("ping");
+            clientSocket.Send(ping);
             if (gotConnected)
             {
                 onConnectionEstablished?.Invoke();

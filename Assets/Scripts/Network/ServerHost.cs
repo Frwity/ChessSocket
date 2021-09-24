@@ -91,7 +91,7 @@ public class ServerHost : MonoBehaviour
                 Disconnect();
                 hasClient = false;
             }
-            dispatcher.SendPing();
+            //dispatcher.SendPing();
         }
     }
 

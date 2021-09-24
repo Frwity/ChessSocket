@@ -190,16 +190,11 @@ public class ServerHost : MonoBehaviour
         }
         if (serverSocket != null)
             serverSocket.Close();
+        dispatcher.SendQuit();
     }
 
     private void OnDestroy()
     {
         Disconnect();
-        if (serverSocket != null)
-        {
-            Debug.Log("Closing Socket");
-            // server Socket : no shutdown necessary
-            serverSocket.Close();
-        }
     }
 }

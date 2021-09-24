@@ -76,6 +76,7 @@ public class ServerHost : MonoBehaviour
     {
         if (hasClient)
         {
+            clientSocket.Send(new byte[1]);
             if (gotConnected)
             {
                 onConnectionEstablished?.Invoke();

@@ -61,6 +61,7 @@ public class Client : MonoBehaviour
     {
         if (Connected)
         {
+
             if (gotConnected)
             {
                 onConnectionEstablished?.Invoke();
@@ -69,13 +70,17 @@ public class Client : MonoBehaviour
 
             if (!isReceiving)
                 StartReceiveMessage();
-           
+
         }
-        if (hasServer && !socket.Connected)
+        if (hasServer)
         {
-            dispatcher.QuitGame();
-            Disconnect();
-            hasServer = false;
+            socket.Send(new byte[1]);
+            if (!socket.Connected)
+            {
+                dispatcher.QuitGame();
+                Disconnect();
+                hasServer = false;
+            }
         }
     }
 

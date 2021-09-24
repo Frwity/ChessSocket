@@ -165,7 +165,6 @@ public class NetworkDataDispatcher : MonoBehaviour
                 break;
 
             default:
-                Debug.LogError("Something is very wrong: the default case was reached in ProcessData()");
                 break;
         }
     }

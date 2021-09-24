@@ -61,7 +61,6 @@ public class Client : MonoBehaviour
     {
         if (Connected)
         {
-
             if (gotConnected)
             {
                 onConnectionEstablished?.Invoke();
@@ -74,7 +73,7 @@ public class Client : MonoBehaviour
         }
         if (hasServer)
         {
-            socket.Send(new byte[1]);
+            socket.Send(System.Text.Encoding.ASCII.GetBytes("ping"));
             if (!socket.Connected)
             {
                 dispatcher.QuitGame();

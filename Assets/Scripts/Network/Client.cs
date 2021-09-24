@@ -79,7 +79,7 @@ public class Client : MonoBehaviour
                 Disconnect();
                 hasServer = false;
             }
-            dispatcher.SendPing();
+            //dispatcher.SendPing();
         }
     }
 

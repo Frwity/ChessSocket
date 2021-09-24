@@ -29,6 +29,11 @@ public partial class ChessGameMgr : MonoBehaviour
     private bool IsAIEnabled = false;
     private bool IsPlayingOnline = false;
 
+    public bool PlayingOnline
+    {
+        get { return IsPlayingOnline; }
+    }
+
     private ChessAI chessAI = null;
     private Transform boardTransform = null;
     private static int BOARD_SIZE = 8;

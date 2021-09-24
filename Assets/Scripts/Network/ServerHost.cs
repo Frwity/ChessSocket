@@ -12,7 +12,6 @@ public class ServerHost : MonoBehaviour
 {
     Thread lobbyThread;
     Socket serverSocket;
-    int port = 11000;
     IPEndPoint localEP;
     IPAddress networkIP;
     Socket clientSocket;
@@ -25,11 +24,11 @@ public class ServerHost : MonoBehaviour
     [SerializeField]
     public UnityEvent onConnectionEstablished;
 
-    public string FullIP
+    public string IP
     {
         get
         {
-            return networkIP.ToString() + ":" + port.ToString();
+            return networkIP.ToString();
         }
     }
 
@@ -38,9 +37,11 @@ public class ServerHost : MonoBehaviour
         if (!enabled)
             return;
 
+        dispatcher = FindObjectOfType<NetworkDataDispatcher>();
+
         if (RegisterNetworkIP())
         {
-            localEP = new IPEndPoint(networkIP, port);
+            localEP = new IPEndPoint(networkIP, dispatcher.Port);
             serverSocket = new Socket(networkIP.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
             Debug.Log("Initialazing Server");
             serverSocket.Bind(localEP);
@@ -52,7 +53,6 @@ public class ServerHost : MonoBehaviour
             Debug.Log("[SERVER] Could not find this machine's IP LAN address. Are you connected to a network?");
         }
 
-        dispatcher = FindObjectOfType<NetworkDataDispatcher>();
     }
 
     private bool RegisterNetworkIP()

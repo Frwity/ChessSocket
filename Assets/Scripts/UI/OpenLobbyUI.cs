@@ -35,7 +35,7 @@ public class OpenLobbyUI : MonoBehaviour
 
     private void Start()
     {
-        IP.text = "Lobby IP: " + serverHost.FullIP;
+        IP.text = "Lobby IP: " + serverHost.IP;
     }
 
     public void PseudoUpdated()
@@ -55,15 +55,5 @@ public class OpenLobbyUI : MonoBehaviour
     {
         found.enabled   = play.interactable = false;
         waiting.enabled = true;
-    }
-
-    public void OpponentReady(bool toggle)
-    {
-
-    }
-
-    public void SendReady()
-    {
-
     }
 }

@@ -14,8 +14,8 @@ public class ChessSerializer
         BEGIN = (NAME  << 1),
         COLOR = (BEGIN << 1),
         MOVE  = (COLOR << 1),
-        CHAT  = (MOVE  << 1)
-
+        CHAT  = (MOVE  << 1),
+        PING  = (CHAT  << 1)
     }
 
     [Serializable]

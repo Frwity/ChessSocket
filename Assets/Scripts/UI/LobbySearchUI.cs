@@ -46,6 +46,8 @@ public class LobbySearchUI : MonoBehaviour
         {
             IP.ActivateInputField();
         }
+        if (found.enabled)
+            join.interactable = false;
     }
 
     private void Refresh()

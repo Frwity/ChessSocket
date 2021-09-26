@@ -6,7 +6,7 @@ Unity version 2020.3.17f1 (LTS)
 We implemented the online mode based on the template provided. To be more specific, with our implementation:
 
 - Each player can either join or host a lobby
-- The host has to give their opponent the IP address displayed on their script
+- The host has to give their opponent the IP address displayed on their screen
 - The client will have to put the host's IP address into the dedicated field
 - Both the host and the client must choose a pseudo
 - Once the host and the client are connected, the host chooses when to launch the game
@@ -24,6 +24,19 @@ The network logic is in the scripts of the `Assets\Scripts\Network` directory:
 
 The `Assets\Scripts\UI` directory has the UI-related scripts. Some of them make used of the scripts in `Assets\Scripts\Network\`.
 
+## Known Bug
+
+- If either player would restart a new game, and so open a new lobby, players can join and play but the board will only reset on the first move (no impact on the gameplay but only in feedback). And in some case the menu might not be properly displayed but ultimately the players can play. 
 
 ## Playing
 Either launch the build available in the `Build` folder, or clone our repository and launch the project: `ssh://git@git.isartintra.com:2424/2021/GP_2023_CHESSMULTI/Groupe_03.git`
+
+## Video
+
+   https://youtu.be/bqGTLNNdUkM
+
+   Or go in the `Media` folder
+
+
+
+
